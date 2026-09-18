@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #0a0a0a;
+            color: white;
+            font-family: monospace;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ff6b35;
+            margin: 20px 0;
+        }
+        .info {
+            background: #1a1a1f;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🖼️ Image Loading Test</h1>
+        
+        <div class="info">
+            <strong>Testing image path:</strong> /assets/images/sakthi.png
+        </div>
+        
+        <h2>Test 1: Direct Path</h2>
+        <img src="/assets/images/sakthi.png" alt="Sakthi" id="img1" />
+        <div id="status1" class="info">Loading...</div>
+        
+        <h2>Test 2: Relative Path</h2>
+        <img src="./assets/images/sakthi.png" alt="Sakthi" id="img2" />
+        <div id="status2" class="info">Loading...</div>
+        
+        <h2>Test 3: Assets Root</h2>
+        <img src="assets/images/sakthi.png" alt="Sakthi" id="img3" />
+        <div id="status3" class="info">Loading...</div>
+    </div>
+    
+    <script>
+        const testImage = (imgId, statusId) => {
+            const img = document.getElementById(imgId);
+            const status = document.getElementById(statusId);
+            
+            img.onload = () => {
+                status.innerHTML = `✅ <strong>SUCCESS!</strong> Image loaded<br>
+                    Dimensions: ${img.naturalWidth} x ${img.naturalHeight}px<br>
+                    Size: ${(img.naturalWidth * img.naturalHeight * 4 / 1024 / 1024).toFixed(2)} MB (uncompressed)`;
+                status.style.background = '#1a4d1a';
+            };
+            
+            img.onerror = (e) => {
+                status.innerHTML = `❌ <strong>FAILED!</strong> Could not load image<br>
+                    Path: ${img.src}<br>
+                    Error: ${e.type}`;
+                status.style.background = '#4d1a1a';
+            };
+        };
+        
+        testImage('img1', 'status1');
+        testImage('img2', 'status2');
+        testImage('img3', 'status3');
+        
+        console.log('🔍 Current location:', window.location.href);
+        console.log('📁 Testing image paths...');
+    </script>
+</body>
+</html>

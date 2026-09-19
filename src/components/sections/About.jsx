@@ -82,24 +82,6 @@ export function About() {
     return () => ctx.revert()
   }, [])
 
-  const skills = {
-    Frontend: [
-      'React.js', 'TypeScript', 'JavaScript ES6+', 'Redux Toolkit', 
-      'Next.js', 'React Router', 'Context API', 'Hooks',
-      'HTML5', 'CSS3', 'Bootstrap', 'MUI', 'Tailwind CSS'
-    ],
-    Backend: [
-      'Node.js', 'Express.js', 'REST APIs', 'Python', 'FastAPI', 'NestJS'
-    ],
-    Database: [
-      'MySQL', 'MongoDB', 'PostgreSQL', 'SQLite'
-    ],
-    Performance: [
-      'Code Splitting', 'Lazy Loading', 'Memoization', 
-      'Render Optimization', 'Lighthouse Optimization'
-    ]
-  }
-
   const stats = [
     { value: '2+', label: 'Years Experience' },
     { value: '30+', label: 'Projects Completed' },
@@ -145,17 +127,17 @@ export function About() {
           <div className="about-content-column">
             <div ref={textRef} className="about-text-content">
               {/* Section Label */}
-              <div className="about-section-label about-fade-in">
+              <div className="about-section-label about-fade-in" ref={useParallax({ distance: 20, from: -10, lag: 0.8 })}>
                 <span className="section-eyebrow">About Me</span>
               </div>
 
               {/* Header */}
-              <div className="about-header about-fade-in">
+              <div className="about-header about-fade-in" ref={useParallax({ distance: 30, from: -15, lag: 0.75 })}>
                 <h2 className="about-greeting">Hi, I'm Sakthi — a Full Stack Developer & AI Enthusiast.</h2>
               </div>
 
               {/* Description */}
-              <div className="about-description about-fade-in">
+              <div className="about-description about-fade-in" ref={useParallax({ distance: 35, from: -18, lag: 0.7 })}>
                 <p className="about-text">
                   I enjoy turning ideas into fast, scalable, and user-friendly web applications. 
                   With 2+ years of experience, I work across the stack—from crafting responsive 
@@ -174,7 +156,7 @@ export function About() {
               </div>
 
               {/* Stats */}
-              <div className="stats-container about-fade-in">
+              <div className="stats-container about-fade-in" ref={useParallax({ distance: 25, from: -12, lag: 0.65 })}>
                 {stats.map((stat, index) => (
                   <div key={index} className="stat-card">
                     <div className="stat-value">{stat.value}</div>
@@ -183,26 +165,8 @@ export function About() {
                 ))}
               </div>
 
-              {/* Skills */}
-              <div className="skills-section about-fade-in">
-                <h4 className="skills-heading">What I Work With</h4>
-                
-                {Object.entries(skills).map(([category, items]) => (
-                  <div key={category} className="skills-category">
-                    <h5 className="skills-category-title">{category}</h5>
-                    <div className="skills-grid">
-                      {items.map((skill, index) => (
-                        <span key={index} className="skill-item">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
               {/* CTA */}
-              <div className="about-cta about-fade-in">
+              <div className="about-cta about-fade-in" ref={useParallax({ distance: 30, from: -15, lag: 0.55 })}>
                 <a href="#contact" className="btn btn--solid">
                   Let's Work Together
                 </a>

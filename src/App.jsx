@@ -9,7 +9,6 @@ import { About } from '@/components/sections/About'
 import { Stack } from '@/components/sections/Stack'
 import { Experience } from '@/components/sections/Experience'
 import { Projects } from '@/components/sections/Projects'
-import { InteractiveGrid } from '@/components/sections/InteractiveGrid'
 import { Education } from '@/components/sections/Education'
 import { Contact } from '@/components/sections/Contact'
 import { marquee } from '@/data/site'
@@ -37,7 +36,6 @@ export default function App() {
         <Experience />
         <Stack />
         <Projects />
-        <InteractiveGrid />
         <Education />
         <Contact />
       </main>

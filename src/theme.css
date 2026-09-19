@@ -492,13 +492,13 @@
   .showcase-container {
     display: flex;
     flex-direction: column;
-    gap: 12rem;
+    gap: 8rem;
     width: 100%;
   }
 
   .showcase-header {
     text-align: center;
-    padding: 4rem 0;
+    padding: 2rem 0 1rem;
   }
 
   .image-box {
@@ -641,7 +641,7 @@
     }
 
     .showcase-container {
-      gap: 6rem;
+      gap: 4rem;
     }
   }
 

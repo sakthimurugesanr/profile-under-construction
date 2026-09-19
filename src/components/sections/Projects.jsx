@@ -66,14 +66,14 @@ export function Projects() {
   }, [])
 
   return (
-    <Section id="projects" tone="alt">
+    <Section id="projects" tone="alt" className="!py-16 md:!py-20 lg:!py-24">
       <div ref={containerRef} className="showcase-container">
         {/* Header */}
         <div className="showcase-header">
-          <h2 className="display text-center text-4xl md:text-6xl mb-4">
+          <h2 className="display text-center text-4xl md:text-6xl mb-3">
             Skills in Action
           </h2>
-          <p className="text-center meta mb-12 md:mb-20">
+          <p className="text-center meta mb-8 md:mb-12">
             Personal projects showcasing real-world implementations • Scroll to explore
           </p>
         </div>

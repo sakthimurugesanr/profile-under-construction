@@ -199,7 +199,7 @@ export function About() {
   ]
 
   return (
-    <Section id="about" tone="base" ref={sectionRef}>
+    <Section id="about" tone="base" ref={sectionRef} data-section="about">
       <div className="about-container" data-reveal="fade-up">
         {/* Main Content Grid */}
         <div className="about-grid">
@@ -212,8 +212,8 @@ export function About() {
               {/* Image Container - Regular image for now */}
               <div ref={imageRef} className="about-image-container">
                 <img
-                  src="/assets/images/sakthi.png"
-                  alt="Sakthi Murugesan - Fullstack Developer"
+                  src="/sakthi.png"
+                  alt="Sakthi Murugesan - React AI Engineer & MERN Stack Developer"
                   className="about-image"
                   onError={(e) => {
                     // Try fallback

@@ -164,7 +164,7 @@ function Role({ role, index }) {
 
 export function Experience() {
   return (
-    <Section id="work">
+    <Section id="work" data-section="experience">
       <SectionHeader
         title="Where I have worked"
         note="Most recent first. The earliest role is not an engineering job, and it is on the page on purpose."

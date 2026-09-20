@@ -5,7 +5,7 @@ import { education } from '@/data/site'
 
 export function Education() {
   return (
-    <Section id="background">
+    <Section id="background" data-section="education">
       <SectionHeader title="How I got here" data-reveal="fade-up" />
       <div className="grid gap-6 lg:grid-cols-12" data-reveal="fade-up">
         <Panel data-reveal className="will-reveal flex flex-col gap-6 lg:col-span-7">

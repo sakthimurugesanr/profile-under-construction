@@ -14,9 +14,13 @@ import { Contact } from '@/components/sections/Contact'
 import { marquee } from '@/data/site'
 import { ScrollTrigger, reducedMotion } from '@/lib/gsap'
 import { useScrollReveal } from '@/hooks/useScrollReveal'
+import { useDynamicTitle } from '@/hooks/useDynamicTitle'
+import SEO from '@/components/seo/SEO'
+import { getAllSchemas } from '@/data/schema'
 
 export default function App() {
   useScrollReveal() // Enable scroll-triggered animations
+  useDynamicTitle() // Enable dynamic page titles based on scroll position
 
   useEffect(() => {
     // Fonts change layout height, so recalculate triggers once they land.
@@ -26,6 +30,11 @@ export default function App() {
 
   return (
     <>
+      <SEO 
+        schema={getAllSchemas()}
+        title="React AI Engineer & MERN Stack Developer"
+        description="Expert React AI Engineer and MERN Stack Developer specializing in artificial intelligence, machine learning, and full-stack web development. Building innovative AI-powered applications with React, Node.js, Python, and modern web technologies."
+      />
       <ScrollProgress />
       <Cursor />
       <a href="#main" className="btn btn--solid sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70]">

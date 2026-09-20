@@ -85,7 +85,6 @@ class PlaneSubject {
           value: textureLoader.load(
             imageSrc,
             (texture) => {
-              console.log('✅ Image loaded successfully:', imageSrc)
               // Update aspect ratio
               if (texture.image) {
                 material.uniforms.imageAspectRatio.value = texture.image.width / texture.image.height
@@ -93,7 +92,7 @@ class PlaneSubject {
             },
             undefined,
             (error) => {
-              console.error('❌ Error loading image:', imageSrc, error)
+              // Image loading error
             }
           )
         },

@@ -1,6 +1,43 @@
-# Music Player Audio Files
+# Audio Assets
 
-## Add Your Interstellar Tracks Here
+## 1. Glitch Sound Effect (Footer Animation) 🔊
+
+### Quick Setup:
+
+**To add a custom glitch sound:**
+
+1. **Download a glitch sound** from:
+   - https://pixabay.com/sound-effects/search/glitch/
+   - https://freesound.org/ (search "glitch")
+   - Any royalty-free sound library
+
+2. **Save as**: `glitch.mp3`
+
+3. **Place here**: `public/assets/audio/glitch.mp3`
+
+4. **Update Footer.jsx**:
+   - Open: `src/components/layout/Footer.jsx`
+   - Find the `playGlitchSound` function
+   - Uncomment OPTION 1 (file-based audio)
+   - Comment out OPTION 2 (synthesized audio)
+
+**Sound Specifications:**
+- Format: MP3
+- Duration: 0.3-1.0 seconds
+- Size: <100KB
+- Type: Digital glitch/static burst
+
+**Current Status:**
+- ✅ Synthesized glitch (active now)
+- 📁 Ready for real file (when you add it)
+
+See `HOW_TO_ADD_GLITCH_SOUND.md` for detailed instructions.
+
+---
+
+## 2. Music Player Audio Files
+
+### Add Your Interstellar Tracks Here
 
 To use your own Interstellar slowed + reverb tracks, add these files to this folder:
 
@@ -53,19 +90,20 @@ The player supports these formats (in order of preference):
 public/
 └── assets/
     └── audio/
-        ├── interstellar-theme.mp3  ← Add this file
-        ├── stay.mp3                 ← Add this file
+        ├── glitch.mp3              ← Add glitch sound here
+        ├── interstellar-theme.mp3  ← Add music file
+        ├── stay.mp3                ← Add music file
         └── README.md               ← This file
 ```
 
-### Testing Your Music
+### Testing Your Audio
 
 1. Add the audio files
 2. Open http://localhost:5179/
-3. Click the music player button (bottom-right)
-4. If your files are loaded, you'll see the track names
-5. If not, check the browser console (F12) for errors
+3. For glitch: Scroll to footer and listen
+4. For music: Click music player button (bottom-right)
+5. Check browser console (F12) for any errors
 
 ### Copyright Notice
 
-⚠️ **Important**: Ensure you have the rights to use any audio files you add. The Interstellar soundtrack is copyrighted by Hans Zimmer and Warner Bros. Use for personal projects only.
+⚠️ **Important**: Ensure you have the rights to use any audio files you add. Use royalty-free sounds or obtain proper licenses.

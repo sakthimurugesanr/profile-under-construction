@@ -27,7 +27,7 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       fontSize: {
-        mega: ['clamp(2rem, 10vw, 7rem)', { lineHeight: '0.9', letterSpacing: '-0.03em' }],
+        mega: ['clamp(1.75rem, 9vw, 7rem)', { lineHeight: '0.9', letterSpacing: '-0.03em' }],
         huge: ['clamp(2rem, 6vw, 4rem)', { lineHeight: '0.95', letterSpacing: '-0.03em' }],
       },
       maxWidth: {

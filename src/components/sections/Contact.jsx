@@ -40,9 +40,10 @@ export function Contact() {
       <SectionHeader
         title="Get in touch"
         note="Open to React and fullstack roles, and to freelance work I can fit around them."
+        data-reveal="fade-up"
       />
 
-      <div className="grid gap-6 lg:grid-cols-12">
+      <div className="grid gap-6 lg:grid-cols-12" data-reveal="fade-up">
         <Panel data-reveal className="will-reveal flex flex-col gap-4 lg:col-span-5">
           <dl className="flex flex-col divide-y divide-white/10">
             {contactFacts.map((fact) => (

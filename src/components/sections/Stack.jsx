@@ -48,8 +48,9 @@ export function Stack() {
       <SectionHeader
         title="What I work with"
         note="Tools I use regularly, grouped by where they sit in an application."
+        data-reveal="fade-up"
       />
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2" data-reveal="fade-up">
         {stack.map((group, index) => (
           <StackCard key={group.title} group={group} index={index} />
         ))}

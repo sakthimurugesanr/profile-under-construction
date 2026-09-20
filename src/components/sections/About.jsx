@@ -1,8 +1,117 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Section } from '@/components/ui/Section'
 import { gsap } from '@/lib/gsap'
 import { useParallax } from '@/hooks/useParallax'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
+
+function AnimatedCounter({ value, label, delay = 0 }) {
+  const counterRef = useRef(null)
+  const [hasAnimated, setHasAnimated] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasAnimated) {
+            setHasAnimated(true)
+            animateCounter()
+          }
+        })
+      },
+      { threshold: 0.5 }
+    )
+
+    if (counterRef.current) {
+      observer.observe(counterRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [hasAnimated])
+
+  const animateCounter = () => {
+    const element = counterRef.current
+    if (!element) return
+
+    // Extract numeric part and suffix (like +, %)
+    const match = value.match(/^(\d+)(.*)$/)
+    if (!match) return
+
+    const targetNumber = parseInt(match[1])
+    const suffix = match[2]
+
+    // Create counter animation with glitch effect
+    const counter = { val: 0 }
+    
+    gsap.to(counter, {
+      val: targetNumber,
+      duration: 2,
+      delay: delay,
+      ease: 'power2.out',
+      onUpdate: () => {
+        const current = Math.ceil(counter.val)
+        element.textContent = current + suffix
+        
+        // Random glitch during animation
+        if (Math.random() > 0.92 && counter.val < targetNumber) {
+          element.style.transform = `translate(${gsap.utils.random(-2, 2)}px, ${gsap.utils.random(-2, 2)}px)`
+          setTimeout(() => {
+            element.style.transform = 'translate(0, 0)'
+          }, 50)
+        }
+      },
+      onComplete: () => {
+        // Final celebration effect
+        element.style.transform = 'scale(1.1)'
+        setTimeout(() => {
+          element.style.transform = 'scale(1)'
+        }, 200)
+        
+        // Create particle burst
+        createParticleBurst(element)
+      }
+    })
+  }
+
+  const createParticleBurst = (element) => {
+    const rect = element.getBoundingClientRect()
+    const particles = 8
+    
+    for (let i = 0; i < particles; i++) {
+      const particle = document.createElement('div')
+      particle.className = 'counter-particle'
+      particle.style.left = `${rect.left + rect.width / 2}px`
+      particle.style.top = `${rect.top + rect.height / 2}px`
+      document.body.appendChild(particle)
+      
+      const angle = (Math.PI * 2 * i) / particles
+      const distance = gsap.utils.random(30, 60)
+      const tx = Math.cos(angle) * distance
+      const ty = Math.sin(angle) * distance
+      
+      gsap.to(particle, {
+        x: tx,
+        y: ty,
+        opacity: 0,
+        scale: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        onComplete: () => particle.remove()
+      })
+    }
+  }
+
+  return (
+    <div className="stat-value-wrapper">
+      <div 
+        ref={counterRef} 
+        className="stat-value stat-value-animated"
+        data-value={value}
+      >
+        0
+      </div>
+    </div>
+  )
+}
 
 export function About() {
   const sectionRef = useRef(null)
@@ -91,7 +200,7 @@ export function About() {
 
   return (
     <Section id="about" tone="base" ref={sectionRef}>
-      <div className="about-container">
+      <div className="about-container" data-reveal="fade-up">
         {/* Main Content Grid */}
         <div className="about-grid">
           {/* Left Column - Image */}
@@ -106,10 +215,7 @@ export function About() {
                   src="/assets/images/sakthi.png"
                   alt="Sakthi Murugesan - Fullstack Developer"
                   className="about-image"
-                  onLoad={() => console.log('✅ Image loaded!')}
                   onError={(e) => {
-                    console.error('❌ Image failed to load')
-                    console.log('Tried path:', e.target.src)
                     // Try fallback
                     e.target.src = '/assets/images/placeholder-profile.svg'
                   }}
@@ -140,7 +246,7 @@ export function About() {
               <div className="about-description about-fade-in" ref={useParallax({ distance: 35, from: -18, lag: 0.7 })}>
                 <p className="about-text">
                   I enjoy turning ideas into fast, scalable, and user-friendly web applications. 
-                  With 2+ years of experience, I work across the stack—from crafting responsive 
+                  With 2+ years of experience, I work across the stack from crafting responsive 
                   interfaces with React, TypeScript, JavaScript, and Redux Toolkit to building 
                   reliable APIs and backend services with Node.js, Express.js, Python, and FastAPI.
                 </p>
@@ -159,7 +265,11 @@ export function About() {
               <div className="stats-container about-fade-in" ref={useParallax({ distance: 25, from: -12, lag: 0.65 })}>
                 {stats.map((stat, index) => (
                   <div key={index} className="stat-card">
-                    <div className="stat-value">{stat.value}</div>
+                    <AnimatedCounter 
+                      value={stat.value} 
+                      label={stat.label}
+                      delay={index * 0.2}
+                    />
                     <div className="stat-label">{stat.label}</div>
                   </div>
                 ))}

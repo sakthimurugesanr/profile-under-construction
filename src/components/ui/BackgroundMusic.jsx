@@ -51,7 +51,6 @@ export function BackgroundMusic() {
             setIsLoading(false)
           })
           .catch(err => {
-            console.log('Audio play failed:', err)
             setIsPlaying(false)
             setIsLoading(false)
           })

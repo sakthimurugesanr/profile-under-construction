@@ -13,8 +13,11 @@ import { Education } from '@/components/sections/Education'
 import { Contact } from '@/components/sections/Contact'
 import { marquee } from '@/data/site'
 import { ScrollTrigger, reducedMotion } from '@/lib/gsap'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
 
 export default function App() {
+  useScrollReveal() // Enable scroll-triggered animations
+
   useEffect(() => {
     // Fonts change layout height, so recalculate triggers once they land.
     document.fonts?.ready.then(() => ScrollTrigger.refresh())

@@ -168,8 +168,9 @@ export function Experience() {
       <SectionHeader
         title="Where I have worked"
         note="Most recent first. The earliest role is not an engineering job, and it is on the page on purpose."
+        data-reveal="fade-up"
       />
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-12" data-reveal="fade-up">
         {experience.map((role, index) => (
           <Role key={role.company} role={role} index={index} />
         ))}

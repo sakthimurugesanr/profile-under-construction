@@ -47,14 +47,14 @@ export function Header() {
         }, 0)
         .to('.hamburger-close', {
           opacity: 1,
-          yPercent: -125,
-          duration: 1,
+          y: 0,
+          duration: 0.6,
           ease: 'power4.out',
         }, 0)
         .to('.hamburger-line', {
           opacity: 0,
-          yPercent: -125,
-          duration: 1,
+          y: -24,
+          duration: 0.6,
           ease: 'power4.out',
         }, 0)
         .set('.hamburger-menu', { pointerEvents: 'all' })
@@ -76,25 +76,25 @@ export function Header() {
           ease: 'power4.out',
         }, '-=1')
         .to('.hamburger-bg', {
-          scale: 0.9,
-          duration: 0.25,
-          ease: 'elastic.out',
-        }, '-=0.9')
+          scale: 0.95,
+          duration: 0.2,
+          ease: 'power2.out',
+        }, '-=0.8')
         .to('.hamburger-bg', {
           scale: 1,
-          duration: 0.25,
+          duration: 0.3,
           ease: 'elastic.out',
-        }, '-=0.5')
+        }, '-=0.4')
         .to('.hamburger-close', {
           opacity: 0,
-          yPercent: 125,
-          duration: 1,
+          y: 24,
+          duration: 0.6,
           ease: 'power4.out',
         }, 0)
         .to('.hamburger-line', {
           opacity: 1,
-          yPercent: 0,
-          duration: 1,
+          y: 0,
+          duration: 0.6,
           ease: 'power4.out',
         }, 0)
         .set('.hamburger-menu', { pointerEvents: 'all' })
@@ -138,12 +138,9 @@ export function Header() {
             className="flex items-center gap-3 z-[60]" 
             onClick={closeMenu}
           >
-            <span className="flex h-9 w-9 items-center justify-center border border-line-strong font-display text-sm font-extrabold transition-transform hover:scale-110">
-              {profile.initials}
-            </span>
-            <span className="hidden flex-col leading-tight sm:flex">
-              <span className="font-display text-sm font-extrabold tracking-tight">{profile.name}</span>
-              <span className="meta">{profile.role}</span>
+            {/* Signature-style name for all devices */}
+            <span className="mobile-signature text-xl sm:text-2xl whitespace-nowrap">
+              Sakthi Murugesan
             </span>
           </a>
 
@@ -158,8 +155,8 @@ export function Header() {
                     className={clsx(
                       'px-3 py-1.5 font-mono text-xs transition-all duration-300',
                       active === item.id 
-                        ? 'bg-white text-ink-950 scale-105' 
-                        : 'text-chalk-muted hover:text-chalk hover:scale-105'
+                        ? 'bg-orange-500 text-white scale-105 shadow-lg shadow-orange-500/30' 
+                        : 'text-chalk-muted hover:text-orange-500 hover:scale-105'
                     )}
                   >
                     {item.label}

@@ -11,7 +11,7 @@ const empty = { name: '', email: '', message: '' }
  * mail client rather than pretending to send it. Swap `handleSubmit` for a
  * fetch() when an endpoint exists.
  */
-export default function Contact() {
+export function Contact() {
   const [values, setValues] = useState(empty)
   const [error, setError] = useState(null)
   const [sent, setSent] = useState(false)

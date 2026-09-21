@@ -15,6 +15,7 @@ export default defineConfig({
     // esbuild options for dropping console logs
     esbuild: {
       drop: ['console', 'debugger'],
+      target: 'es2015',
     },
     // Split chunks for better caching
     rollupOptions: {
@@ -28,14 +29,6 @@ export default defineConfig({
           if (id.includes('gsap')) {
             return 'animation-vendor'
           }
-          // Particles vendor chunk
-          if (id.includes('@tsparticles')) {
-            return 'particles-vendor'
-          }
-          // Three.js vendor chunk (only if actually used)
-          if (id.includes('three')) {
-            return 'three-vendor'
-          }
         },
         // Optimize chunk naming for better caching
         chunkFileNames: 'assets/[name]-[hash].js',
@@ -46,13 +39,18 @@ export default defineConfig({
     // Enable source maps for production debugging (disable for production)
     sourcemap: false,
     // Chunk size warning limit
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 500,
     // CSS code splitting
     cssCodeSplit: true,
+    // Optimize CSS
+    cssMinify: true,
+    // Additional build optimizations
+    target: 'es2015',
   },
   // Optimize dependencies
   optimizeDeps: {
     include: ['react', 'react-dom', 'gsap'],
+    exclude: ['@tsparticles/react', '@tsparticles/slim', 'three'],
   },
   // Server configuration
   server: {

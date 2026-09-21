@@ -4,7 +4,7 @@ import { loadSlim } from "@tsparticles/slim"
 
 /**
  * Simple Particle Background
- * Lightweight floating particles effect
+ * Lightweight floating particles effect - optimized for performance
  */
 export default function SimpleParticles() {
   const particlesInit = useCallback(async (engine) => {
@@ -17,7 +17,7 @@ export default function SimpleParticles() {
         value: "transparent",
       },
     },
-    fpsLimit: 60,
+    fpsLimit: 30, // Reduced from 60 for better performance
     particles: {
       color: {
         value: "#ff6b35", // Red/orange color
@@ -32,27 +32,27 @@ export default function SimpleParticles() {
           default: "bounce",
         },
         random: true,
-        speed: 0.5,
+        speed: 0.3, // Reduced from 0.5 for better performance
         straight: false,
       },
       number: {
         density: {
           enable: true,
-          area: 800,
+          area: 1200, // Increased area to reduce particle count
         },
-        value: 80, // Number of particles
+        value: 40, // Reduced from 80 for better performance
       },
       opacity: {
-        value: 0.5,
+        value: 0.3, // Reduced from 0.5 for better performance
       },
       shape: {
         type: "circle",
       },
       size: {
-        value: { min: 1, max: 3 },
+        value: { min: 1, max: 2 }, // Reduced size for better performance
       },
     },
-    detectRetina: true,
+    detectRetina: false, // Disabled for better performance
   }
 
   return (

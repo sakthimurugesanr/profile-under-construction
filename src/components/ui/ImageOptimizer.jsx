@@ -10,6 +10,8 @@ export function OptimizedImage({
   className = '', 
   loading = 'lazy',
   fetchPriority = 'auto',
+  width = 'auto',
+  height = 'auto',
   ...props 
 }) {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -24,7 +26,7 @@ export function OptimizedImage({
           observer.disconnect()
         }
       },
-      { rootMargin: '50px' }
+      { rootMargin: '200px' }
     )
 
     if (imgRef.current) {
@@ -38,6 +40,16 @@ export function OptimizedImage({
     setIsLoaded(true)
   }
 
+  const placeholderStyle = {
+    backgroundColor: '#1a1a1a',
+    width: width === 'auto' ? '100%' : width,
+    height: height === 'auto' ? '100%' : height,
+    minHeight: height === 'auto' ? '300px' : height,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+
   return (
     <div ref={imgRef} className={`image-optimizer ${className}`} {...props}>
       {isInView && (
@@ -46,27 +58,23 @@ export function OptimizedImage({
           alt={alt}
           loading={loading}
           fetchPriority={fetchPriority}
+          width={width}
+          height={height}
           onLoad={handleLoad}
           className={`transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
           style={{ 
             width: '100%', 
             height: 'auto',
-            display: 'block'
+            display: 'block',
+            objectFit: 'cover'
           }}
+          decoding="async"
         />
       )}
       {!isLoaded && (
         <div 
           className="image-placeholder"
-          style={{
-            backgroundColor: '#1a1a1a',
-            width: '100%',
-            height: '100%',
-            minHeight: '200px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
+          style={placeholderStyle}
         />
       )}
     </div>

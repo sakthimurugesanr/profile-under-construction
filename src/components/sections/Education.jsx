@@ -3,7 +3,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { Panel } from '@/components/ui/Panel'
 import { education } from '@/data/site'
 
-export default function Education() {
+export function Education() {
   return (
     <Section id="background" data-section="education">
       <SectionHeader title="How I got here" data-reveal="fade-up" />

@@ -162,7 +162,7 @@ function Role({ role, index }) {
   )
 }
 
-export default function Experience() {
+export function Experience() {
   return (
     <Section id="work" data-section="experience">
       <SectionHeader

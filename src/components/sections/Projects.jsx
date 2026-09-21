@@ -82,7 +82,7 @@ function ProjectCard({ project }) {
   )
 }
 
-export default function Projects() {
+export function Projects() {
   const sectionRef = useRef(null)
   const wrapperRef = useRef(null)
 

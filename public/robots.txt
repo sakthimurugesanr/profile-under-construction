@@ -20,7 +20,7 @@ Allow: /public/
 Allow: /assets/
 
 # Sitemap location
-Sitemap: https://sakthimurugesan.com/sitemap.xml
+Sitemap: https://iamsakthi.online/sitemap.xml
 
 # Specific rules for major search engines
 User-agent: Googlebot

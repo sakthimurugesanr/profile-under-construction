@@ -32,8 +32,8 @@ export default function App() {
     <>
       <SEO 
         schema={getAllSchemas()}
-        title="React AI Engineer & MERN Stack Developer"
-        description="Expert React AI Engineer and MERN Stack Developer specializing in artificial intelligence, machine learning, and full-stack web development. Building innovative AI-powered applications with React, Node.js, Python, and modern web technologies."
+        title="Professional React AI Engineer & MERN Stack Developer"
+        description="Professional React AI Engineer and MERN Stack Developer specializing in artificial intelligence, machine learning, and full-stack web development. Expert in building innovative AI-powered applications with React, Node.js, Python, and modern web technologies."
       />
       <ScrollProgress />
       <Cursor />

@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react'
 
 const sectionTitles = {
-  top: 'Sakthi Murugesan - React AI Engineer & MERN Stack Developer',
-  about: 'About - Sakthi Murugesan | React AI Engineer Background',
+  top: 'Sakthi Murugesan - Professional React AI Engineer & MERN Stack Developer',
+  about: 'About - Sakthi Murugesan | Professional React AI Engineer Background',
   work: 'Experience - Sakthi Murugesan | Professional Work History',
   stack: 'Tech Stack - Sakthi Murugesan | Skills & Technologies',
   projects: 'Projects - Sakthi Murugesan | AI & Full Stack Portfolio',
   background: 'Education - Sakthi Murugesan | Academic Background',
-  contact: 'Contact - Sakthi Murugesan | Hire React AI Engineer'
+  contact: 'Contact - Sakthi Murugesan | Hire Professional React AI Engineer'
 }
 
 const sectionDescriptions = {
-  top: 'Expert React AI Engineer and MERN Stack Developer specializing in artificial intelligence, machine learning, and full-stack web development.',
-  about: 'Learn about Sakthi Murugesan\'s background as a React AI Engineer and MERN Stack Developer, including education, skills, and professional journey.',
+  top: 'Professional React AI Engineer and MERN Stack Developer specializing in artificial intelligence, machine learning, and full-stack web development.',
+  about: 'Learn about Sakthi Murugesan\'s background as a Professional React AI Engineer and MERN Stack Developer, including education, skills, and professional journey.',
   work: 'Explore Sakthi Murugesan\'s professional experience as a React Developer and MERN Stack Engineer at leading technology companies.',
   stack: 'Discover the complete technology stack of Sakthi Murugesan, including React, Node.js, Python, AI/ML frameworks, and modern web development tools.',
   projects: 'View innovative AI and full-stack projects by Sakthi Murugesan, including AI Resume Analyzer, Data Analysis Agent, and enterprise applications.',
   background: 'Review Sakthi Murugesan\'s educational background in Computer Applications and software engineering fundamentals.',
-  contact: 'Get in touch with Sakthi Murugesan, React AI Engineer and MERN Stack Developer, for collaboration and job opportunities.'
+  contact: 'Get in touch with Sakthi Murugesan, Professional React AI Engineer and MERN Stack Developer, for collaboration and job opportunities.'
 }
 
 export function useDynamicTitle() {

@@ -1,12 +1,12 @@
 import { Helmet } from 'react-helmet-async'
 
 const SEO = ({ 
-  title = 'Sakthi Murugesan - React AI Engineer & MERN Stack Developer',
-  description = 'Expert React AI Engineer and MERN Stack Developer specializing in artificial intelligence, machine learning, and full-stack web development. Building innovative AI-powered applications with React, Node.js, Python, and modern web technologies.',
-  keywords = 'React AI Engineer, MERN Stack Developer, Artificial Intelligence, Machine Learning, Full Stack Developer, React.js, Node.js, Python, FastAPI, LangChain, RAG, Vector Database, AI/ML, Web Development, TypeScript, MongoDB, PostgreSQL, AI Application Development, LLM Integration, Groq, HuggingFace, Semantic Search, Computer Vision, Natural Language Processing, Deep Learning, Neural Networks, Software Engineer, Frontend Developer, Backend Developer, Fullstack Developer, AI Engineer, ML Engineer, Data Science, Web Scraping, API Development, Cloud Deployment, Docker, Git, Agile Development, Remote Developer, Freelance Developer, Coimbatore Developer, India Developer, Hire React Developer, Hire AI Engineer, Hire MERN Stack Developer',
-  ogImage = 'https://sakthimurugesan.com/sakthi.png',
-  twitterImage = 'https://sakthimurugesan.com/sakthi.png',
-  canonicalUrl = 'https://sakthimurugesan.com/',
+  title = 'Sakthi Murugesan - Professional React AI Engineer & MERN Stack Developer',
+  description = 'Professional React AI Engineer and MERN Stack Developer specializing in artificial intelligence, machine learning, and full-stack web development. Expert in building innovative AI-powered applications with React, Node.js, Python, and modern web technologies.',
+  keywords = 'Sakthi Murugesan, Professional React AI Engineer, MERN Stack Developer, Artificial Intelligence, Machine Learning, Full Stack Developer, React.js, Node.js, Python, FastAPI, LangChain, RAG, Vector Database, AI/ML, Web Development, TypeScript, MongoDB, PostgreSQL, AI Application Development, LLM Integration, Groq, HuggingFace, Semantic Search, Computer Vision, Natural Language Processing, Deep Learning, Neural Networks, Software Engineer, Frontend Developer, Backend Developer, Fullstack Developer, AI Engineer, ML Engineer, Data Science, Web Scraping, API Development, Cloud Deployment, Docker, Git, Agile Development, Remote Developer, Freelance Developer, Coimbatore Developer, India Developer, Hire React Developer, Hire AI Engineer, Hire MERN Stack Developer',
+  ogImage = 'https://iamsakthi.online/sakthi.png',
+  twitterImage = 'https://iamsakthi.online/sakthi.png',
+  canonicalUrl = 'https://iamsakthi.online/',
   type = 'website',
   author = 'Sakthi Murugesan',
   schema = null

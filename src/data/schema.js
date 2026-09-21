@@ -1,7 +1,7 @@
 // Comprehensive structured data for SEO rich snippets
 import { profile, projects, experience, education } from './site'
 
-const baseUrl = 'https://sakthimurugesan.com'
+const baseUrl = 'https://iamsakthi.online'
 
 export const personSchema = {
   "@context": "https://schema.org",

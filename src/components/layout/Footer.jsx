@@ -2,73 +2,71 @@ import { useRef, useEffect } from 'react'
 import { useParallax } from '@/hooks/useParallax'
 import { gsap } from '@/lib/gsap'
 import { profile } from '@/data/site'
+import glitchSound from '@/assets/glitch/sakthi-glitch.mp3'
 
 export function Footer() {
   const nameRef = useParallax({ distance: -50, from: 0, start: 'top bottom', end: 'bottom top', lag: 0.4 })
   const lineRef = useParallax({ distance: 30, from: -30, start: 'top bottom', end: 'bottom top', lag: 0.6 })
   const scrambleRef = useRef(null)
+  const audioRef = useRef(null)
+
+  useEffect(() => {
+    // Preload audio
+    audioRef.current = new Audio(glitchSound)
+    audioRef.current.volume = 0.5
+    audioRef.current.preload = 'auto'
+
+    // Load audio on user interaction
+    const loadAudio = () => {
+      if (audioRef.current && audioRef.current.readyState < 2) {
+        audioRef.current.load()
+      }
+    }
+
+    // Add interaction listeners for audio preloading
+    const events = ['click', 'keydown', 'touchstart', 'scroll']
+    events.forEach(event => {
+      document.addEventListener(event, loadAudio, { once: true, passive: true })
+    })
+
+    return () => {
+      events.forEach(event => {
+        document.removeEventListener(event, loadAudio)
+      })
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current = null
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const element = scrambleRef.current
     if (!element) return
 
     const originalText = 'SAKTHI'
-    const scrambleChars = '§¶•†‡ÆØÅÑ∆∫ƒ©˙∂∑∏'
+    const scrambleChars = '§¶•†‡ÆØÅÑ∆∫ƒ©˙∂∑∏πµΩ≈ç√∫˜≤≥÷'
     let animationFrameId = null
     let isScrambling = false
-    let audioModule = null
-    let hasUserInteracted = false
+    let isInView = false
 
-    // Preload audio file
-    const preloadAudio = async () => {
+    // Play glitch sound
+    const playGlitchSound = () => {
+      if (!audioRef.current) return
+      
       try {
-        const module = await import('@/assets/glitch/sakthi-glitch.mp3')
-        audioModule = module
-      } catch (err) {
-        // Audio preload failed
-      }
-    }
-
-    // Detect user interaction to enable audio
-    const handleUserInteraction = () => {
-      hasUserInteracted = true
-    }
-
-    // Add interaction listeners early
-    document.addEventListener('click', handleUserInteraction, { once: true })
-    document.addEventListener('keydown', handleUserInteraction, { once: true })
-    document.addEventListener('touchstart', handleUserInteraction, { once: true })
-    document.addEventListener('scroll', handleUserInteraction, { once: true })
-
-    // Preload audio immediately
-    preloadAudio()
-
-    // Play glitch sound from your custom file
-    const playGlitchSound = async () => {
-      try {
-        // Wait a tiny bit to ensure user interaction is registered
-        await new Promise(resolve => setTimeout(resolve, 50))
+        // Clone audio for immediate playback (allows multiple plays)
+        const audio = audioRef.current.cloneNode()
+        audio.volume = 0.5
         
-        // Use preloaded module or load dynamically
-        const module = audioModule || (await import('@/assets/glitch/sakthi-glitch.mp3'))
-        
-        const audio = new Audio(module.default)
-        audio.volume = 0.4
-        
-        // Try to play with better error handling
         const playPromise = audio.play()
-        
         if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              // Audio playing successfully
-            })
-            .catch(err => {
-              // Silently fail - user will see animation without sound
-            })
+          playPromise.catch(() => {
+            // Silently handle autoplay restrictions
+          })
         }
       } catch (error) {
-        // Audio error occurred
+        // Silent fail
       }
     }
 
@@ -76,7 +74,7 @@ export function Footer() {
       if (isScrambling) return
       isScrambling = true
       
-      // Play glitch sound when scramble starts
+      // Play glitch sound at the start
       playGlitchSound()
       
       const startTime = Date.now()
@@ -90,8 +88,13 @@ export function Footer() {
             .map(() => scrambleChars[Math.floor(Math.random() * scrambleChars.length)])
             .join('')
           element.textContent = scrambled
+          
+          // Add glitch visual effect
+          element.style.transform = `translateX(${(Math.random() - 0.5) * 4}px)`
+          
           animationFrameId = requestAnimationFrame(scramble)
         } else {
+          element.style.transform = 'translateX(0)'
           isScrambling = false
           if (callback) callback()
         }
@@ -124,21 +127,42 @@ export function Footer() {
       reveal()
     }
 
-    // Observer to trigger animation when footer is in view
+    const triggerAnimation = () => {
+      // Cancel any ongoing animation
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+      }
+      
+      // Scramble for 400ms, then reveal for 800ms
+      scrambleText(400, () => {
+        setTimeout(() => {
+          revealText(800)
+        }, 50)
+      })
+    }
+
+    // Observer to trigger animation EVERY TIME footer comes into view
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Scramble for 500ms, then reveal for 1000ms
-            scrambleText(500, () => {
-              setTimeout(() => {
-                revealText(1000)
-              }, 100)
-            })
+          if (entry.isIntersecting && !isInView) {
+            // Just entered view - trigger animation
+            isInView = true
+            triggerAnimation()
+          } else if (!entry.isIntersecting && isInView) {
+            // Just left view - reset state
+            isInView = false
+            // Reset text to original
+            if (!isScrambling) {
+              element.textContent = originalText
+            }
           }
         })
       },
-      { threshold: 0.3 }
+      { 
+        threshold: 0.2, 
+        rootMargin: '0px 0px -100px 0px' 
+      }
     )
 
     observer.observe(element)
@@ -148,11 +172,6 @@ export function Footer() {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId)
       }
-      // Clean up interaction listeners
-      document.removeEventListener('click', handleUserInteraction)
-      document.removeEventListener('keydown', handleUserInteraction)
-      document.removeEventListener('touchstart', handleUserInteraction)
-      document.removeEventListener('scroll', handleUserInteraction)
     }
   }, [])
 

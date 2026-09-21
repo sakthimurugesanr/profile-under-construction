@@ -42,7 +42,7 @@ function StackCard({ group, index }) {
   )
 }
 
-export function Stack() {
+export default function Stack() {
   return (
     <Section id="stack" tone="alt" className="!py-16 md:!py-20 lg:!py-24" data-section="stack">
       <SectionHeader

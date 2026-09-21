@@ -6,7 +6,7 @@ import { loadSlim } from "@tsparticles/slim"
  * Simple Particle Background
  * Lightweight floating particles effect
  */
-export function SimpleParticles() {
+export default function SimpleParticles() {
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine)
   }, [])

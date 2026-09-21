@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { Section } from '@/components/ui/Section'
+import { OptimizedImage } from '@/components/ui/ImageOptimizer'
 import { gsap } from '@/lib/gsap'
 import { useParallax } from '@/hooks/useParallax'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
@@ -113,7 +114,7 @@ function AnimatedCounter({ value, label, delay = 0 }) {
   )
 }
 
-export function About() {
+export default function About() {
   const sectionRef = useRef(null)
   
   // Parallax effects for different layers
@@ -209,16 +210,14 @@ export function About() {
               {/* Parallax Brush Stroke */}
               <div ref={brushRef} className="brush-stroke" />
               
-              {/* Image Container - Regular image for now */}
+              {/* Image Container - Optimized image for performance */}
               <div ref={imageRef} className="about-image-container">
-                <img
+                <OptimizedImage
                   src="/sakthi.png"
                   alt="Sakthi Murugesan - React AI Engineer & MERN Stack Developer"
                   className="about-image"
-                  onError={(e) => {
-                    // Try fallback
-                    e.target.src = '/assets/images/placeholder-profile.svg'
-                  }}
+                  loading="eager"
+                  fetchPriority="high"
                 />
                 <div className="image-overlay" />
               </div>

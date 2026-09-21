@@ -1,9 +1,11 @@
-import { useRef } from 'react'
+import { useRef, lazy, Suspense } from 'react'
 import { facts, profile } from '@/data/site'
 import { gsap, reducedMotion } from '@/lib/gsap'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { useMagneticEffect } from '@/hooks/useMagneticEffect'
-import { SimpleParticles } from '@/components/ui/SimpleParticles'
+
+// Lazy load particles for better performance
+const SimpleParticles = lazy(() => import('@/components/ui/SimpleParticles').then(m => ({ default: m.SimpleParticles })))
 
 /**
  * Parallax Hero with depth-layered scene
@@ -161,7 +163,9 @@ export function Hero() {
     >
       {/* Particle Background - Only in Hero */}
       <div className="absolute inset-0 -z-40">
-        <SimpleParticles />
+        <Suspense fallback={null}>
+          <SimpleParticles />
+        </Suspense>
       </div>
 
       {/* Layer 2: Mid background - Glow (medium speed) */}

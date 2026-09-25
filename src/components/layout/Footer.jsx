@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { useParallax } from '@/hooks/useParallax'
-import { gsap } from '@/lib/gsap'
+import { gsap, reducedMotion } from '@/lib/gsap'
 import { profile } from '@/data/site'
 import glitchSound from '@/assets/glitch/sakthi-glitch.mp3'
 
@@ -11,28 +11,8 @@ export function Footer() {
   const audioRef = useRef(null)
 
   useEffect(() => {
-    // Preload audio
-    audioRef.current = new Audio(glitchSound)
-    audioRef.current.volume = 0.5
-    audioRef.current.preload = 'auto'
-
-    // Load audio on user interaction
-    const loadAudio = () => {
-      if (audioRef.current && audioRef.current.readyState < 2) {
-        audioRef.current.load()
-      }
-    }
-
-    // Add interaction listeners for audio preloading
-    const events = ['click', 'keydown', 'touchstart', 'scroll']
-    events.forEach(event => {
-      document.addEventListener(event, loadAudio, { once: true, passive: true })
-    })
-
+    // Audio is fetched only when the footer effect actually plays.
     return () => {
-      events.forEach(event => {
-        document.removeEventListener(event, loadAudio)
-      })
       if (audioRef.current) {
         audioRef.current.pause()
         audioRef.current = null
@@ -42,7 +22,7 @@ export function Footer() {
 
   useEffect(() => {
     const element = scrambleRef.current
-    if (!element) return
+    if (!element || reducedMotion()) return
 
     const originalText = 'SAKTHI'
     const scrambleChars = '§¶•†‡ÆØÅÑ∆∫ƒ©˙∂∑∏πµΩ≈ç√∫˜≤≥÷'
@@ -52,11 +32,15 @@ export function Footer() {
 
     // Play glitch sound
     const playGlitchSound = () => {
-      if (!audioRef.current) return
+      if (!audioRef.current) {
+        audioRef.current = new Audio(glitchSound)
+        audioRef.current.preload = 'none'
+      }
       
       try {
         // Clone audio for immediate playback (allows multiple plays)
-        const audio = audioRef.current.cloneNode()
+        const audio = audioRef.current
+        audio.currentTime = 0
         audio.volume = 0.5
         
         const playPromise = audio.play()
@@ -198,7 +182,7 @@ export function Footer() {
             {/* Left Column */}
             <div className="footer-column">
               <p className="footer-text">
-                Fullstack Developer specializing in React, Node.js, and modern web technologies.
+                AI Engineer & MERN Stack Developer building applications with React, Node.js and Python.
               </p>
               <p className="footer-copyright">
                 © {new Date().getFullYear()} Sakthi Murugesan. All rights reserved.

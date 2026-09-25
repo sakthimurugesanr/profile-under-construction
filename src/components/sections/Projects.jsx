@@ -3,7 +3,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { Tag } from '@/components/ui/Tag'
 import { projects } from '@/data/site'
 import { useHoverTilt } from '@/hooks/useHoverTilt'
-import { gsap } from '@/lib/gsap'
+import { gsap, reducedMotion } from '@/lib/gsap'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { clsx } from '@/lib/clsx'
 
@@ -49,13 +49,13 @@ function ProjectCard({ project }) {
         {/* Tech Stack */}
         <div className="mb-4">
           <h4 className="meta-strong mb-2 text-chalk">Tech Stack:</h4>
-          <div className="flex flex-wrap gap-2">
+          <ul className="flex flex-wrap gap-2">
             {project.tags.map((tag) => (
               <Tag key={tag} className="text-xs">
                 {tag}
               </Tag>
             ))}
-          </div>
+          </ul>
         </div>
 
         {/* Footer with GitHub link */}
@@ -65,6 +65,7 @@ function ProjectCard({ project }) {
             <span className="meta-strong text-chalk break-words">{project.detail.value}</span>
           </div>
           <a
+            aria-label={`View ${project.name} source code on GitHub`}
             href={project.repo}
             target="_blank"
             rel="noopener noreferrer"
@@ -90,25 +91,29 @@ export function Projects() {
     const section = sectionRef.current
     const wrapper = wrapperRef.current
     
-    if (!section || !wrapper) return
+    if (!section || !wrapper || reducedMotion()) return
 
     // Only enable on desktop
     const mm = gsap.matchMedia()
     
-    mm.add("(min-width: 768px)", () => {
-      const cards = gsap.utils.toArray('.project-card')
+    mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+      const cards = gsap.utils.toArray(section.querySelectorAll('.project-card'))
       
+      if (cards.length < 2) return
+      section.classList.add('has-horizontal-motion')
       gsap.to(cards, {
-        xPercent: -100 * (cards.length - 1),
+        x: () => -Math.max(0, wrapper.scrollWidth - section.clientWidth),
         ease: "none",
         scrollTrigger: {
+          invalidateOnRefresh: true,
           trigger: section,
           pin: true,
           scrub: 1,
           snap: 1 / (cards.length - 1),
-          end: () => "+=" + wrapper.offsetWidth
+          end: () => "+=" + Math.max(1, wrapper.scrollWidth - section.clientWidth)
         }
       })
+      return () => section.classList.remove('has-horizontal-motion')
     })
 
     return () => mm.revert()
@@ -116,13 +121,14 @@ export function Projects() {
 
   return (
     <section 
-      id="projects" 
+      id="projects"
+      aria-label="AI and MERN stack projects"
       ref={sectionRef}
       className={clsx('section section--alt horizontal-scroll-section')}
     >
       <div className="shell">
         <SectionHeader
-          title="Skills in Action"
+          title="AI & MERN Stack Projects"
           note="Personal projects showcasing full-stack development, AI/ML, and modern web technologies."
           data-reveal="fade-up"
           className="mb-12"

@@ -23,7 +23,21 @@ export function Marquee({ items, speed = 26 }) {
       })
     }, el)
 
-    return () => ctx.revert()
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !document.hidden) tween.current?.play()
+      else tween.current?.pause()
+    })
+    observer.observe(el.parentElement)
+    const onVisibility = () => {
+      if (document.hidden) tween.current?.pause()
+      else if (el.getBoundingClientRect().bottom > 0 && el.getBoundingClientRect().top < innerHeight) tween.current?.play()
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => {
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', onVisibility)
+      ctx.revert()
+    }
   }, [speed])
 
   const pause = () => tween.current?.pause()

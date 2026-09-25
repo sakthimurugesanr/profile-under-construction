@@ -20,6 +20,7 @@ export function useScrollProgress({
     const el = ref.current
     if (!el || reducedMotion()) return
 
+    const setProgress = gsap.quickSetter(el, 'scaleX')
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: document.body,
@@ -28,11 +29,7 @@ export function useScrollProgress({
         scrub,
         onUpdate: (self) => {
           const progress = self.progress
-          gsap.to(el, {
-            scaleX: progress,
-            duration: 0.1,
-            ease: 'none',
-          })
+          setProgress(progress)
           if (onUpdate) onUpdate(progress)
         },
       })

@@ -4,7 +4,7 @@
 export const profile = {
   name: 'Sakthi Murugesan',
   initials: 'SM',
-  role: 'React & Node.js developer',
+  role: 'Professional AI Engineer & MERN Stack Developer',
   location: 'Coimbatore, Tamil Nadu, India',
   timezone: 'IST (UTC +5:30)',
   availability: 'Open to work — 30 day notice',
@@ -15,10 +15,11 @@ export const profile = {
     resume: '/assets/resume/resume.pdf',
   },
   intro:
-    'I build web applications end to end  React interfaces on the front, Node and Express services behind them, PostgreSQL or MongoDB underneath. With an MCA degree and 2+ years of experience, I specialize in creating scalable, maintainable applications using modern full-stack technologies.',
+    'I build AI-powered applications and full-stack web applications with React, Node.js and Python, backed by PostgreSQL or MongoDB. With 2+ years of development experience, I specialize in creating scalable, maintainable applications using modern full-stack technologies.',
 }
 
 export const nav = [
+  { id: 'about', label: 'About' },
   { id: 'work', label: 'Experience' },
   { id: 'stack', label: 'Stack' },
   { id: 'projects', label: 'Projects' },
@@ -30,7 +31,7 @@ export const facts = [
   { value: '2024', label: 'Writing React full time since' },
   { value: '4 yrs', label: 'In client-facing and engineering roles' },
   { value: 'MERN', label: 'Primary stack, plus PostgreSQL' },
-  { value: 'MCA', label: 'Master of Computer Applications' },
+  { value: 'MCA · AI', label: '2026–2028 · Continuing education' },
 ]
 
 export const marquee = [
@@ -106,11 +107,12 @@ export const stack = [
 
 export const experience = [
   {
-    company: 'Cannyfore Technology Solutions',
+    company: 'Cannyfore Technology Solutions Pvt Ltd',
     title: 'React Developer',
     period: 'Sep 2024 — Present',
-    place: 'Coimbatore, India',
-    type: 'Full time',
+    duration: '2 yrs 1 mo',
+    place: 'Coimbatore, Tamil Nadu, India',
+    type: 'Full-time',
     current: true,
     summary:
       'Turning product specs into React components and wiring them to the Node and Express services behind them.',
@@ -124,9 +126,10 @@ export const experience = [
   },
   {
     company: 'ASGlobalSoftTech',
-    title: 'MERN Stack Developer, Intern',
+    title: 'MERN Stack Developer',
     period: 'Mar 2024 — Jun 2024',
-    place: '4 months · Coimbatore, India',
+    duration: '4 mos',
+    place: 'Coimbatore, Tamil Nadu, India',
     type: 'Internship',
     summary: 'First professional exposure to the full JavaScript stack, front to database.',
     points: [
@@ -141,8 +144,9 @@ export const experience = [
     company: 'Access Healthcare Services',
     title: 'Senior Client Partner',
     period: 'Mar 2022 — Jan 2024',
-    place: '1 yr 11 mos · Coimbatore, India',
-    type: 'Full time',
+    duration: '1 yr 11 mos',
+    place: 'Coimbatore, Tamil Nadu, India',
+    type: 'Full-time',
     summary:
       'Two years of enterprise client work before the switch to engineering  the reason requirements conversations do not intimidate me.',
     points: [
@@ -256,19 +260,26 @@ export const projects = [
   },
 ]
 
-export const education = {
-  degree: 'Master of Computer Applications (MCA)',
-  school: "Park's College of Engineering and Technology",
-  years: '2021 — 2024',
-  field: 'Computer Applications and Software Development',
-  note: 'Comprehensive education in computer science fundamentals, programming languages, database management, web technologies, and software engineering principles. Gained strong foundation in data structures, algorithms, and modern development practices.',
-  strengths: [
-    'Full-stack web development',
-    'Database design and optimization',
-    'Software engineering principles',
-    'Problem-solving and algorithms',
-  ],
-}
+export const education = [
+  {
+    id: 'education-bcom', year: '2018', endYear: '2021',
+    degree: 'Bachelor of Commerce (BCom)',
+    school: "Park's Collage of Arts and Science",
+    years: 'Jun 2018 – Mar 2021',
+    field: 'Business/Commerce, General',
+    status: 'Grade A',
+    note: 'An academic foundation in business and commerce, followed by a transition into technology and full-stack development.',
+  },
+  {
+    id: 'education-mca', year: '2026', endYear: '2028',
+    degree: 'Master of Computer Applications',
+    school: 'Sikkim Manipal University – Distance Education',
+    years: '2026 – 2028',
+    field: 'Artificial Intelligence',
+    status: '2026–2028 programme',
+    note: 'Continuing education in computer applications with a focus on artificial intelligence.',
+  },
+]
 
 export const contactFacts = [
   { label: 'Email', value: profile.email, href: `mailto:${profile.email}` },

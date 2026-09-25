@@ -21,146 +21,49 @@ export function Hero() {
 
   useIsomorphicLayoutEffect(() => {
     const el = scope.current
-    if (!el) return
-
-    if (reducedMotion()) {
-      gsap.set(el.querySelectorAll('[data-intro], [data-parallax-speed]'), { 
-        opacity: 1, 
-        y: 0,
-        clearProps: 'transform,filter'
-      })
-      return
-    }
-
-    const ctx = gsap.context(() => {
-      // Intro timeline
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      
-      tl.fromTo(
-        '[data-intro="line"]',
-        { 
-          yPercent: 108,
-          rotationX: -45,
-          opacity: 0,
-        },
-        { 
-          yPercent: 0,
-          rotationX: 0,
-          opacity: 1,
-          duration: 1.2,
-          stagger: 0.12,
-          ease: 'power4.out',
-        }
-      )
-      .fromTo(
-        '[data-intro="copy"]',
-        { opacity: 0, y: 30, scale: 0.95 },
-        { 
-          opacity: 1, 
-          y: 0,
-          scale: 1,
-          duration: 0.9, 
-          stagger: 0.1,
-          ease: 'back.out(1.2)',
-        },
-        '-=0.6'
-      )
-      .fromTo(
-        '[data-intro="fact"]',
-        { opacity: 0, y: 20, scale: 0.9 },
-        { 
-          opacity: 1, 
-          y: 0,
-          scale: 1,
-          duration: 0.7, 
-          stagger: 0.08,
-          ease: 'back.out(1.5)',
-        },
-        '-=0.5'
-      )
-
-      // Parallax scroll timeline - multi-layer depth effect
-      const layers = gsap.utils.toArray('[data-parallax-speed]')
-      
-      layers.forEach((layer) => {
-        const speed = parseFloat(layer.dataset.parallaxSpeed) || 1
-        const distance = parseFloat(layer.dataset.parallaxDistance) || 200
-        
-        // Calculate movement: depth determines speed
-        // speed < 1 = recedes (background)
-        // speed > 1 = advances (foreground)
-        const y = (1 - speed) * distance
-        
-        gsap.to(layer, {
-          y: y,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 0.5,
-            invalidateOnRefresh: true
-          }
+    if (!el || reducedMotion()) return
+    const mm = gsap.matchMedia()
+    mm.add({ desktop: '(min-width: 768px)', mobile: '(max-width: 767px)' }, context => {
+      const strength = context.conditions.mobile ? 0.3 : 1
+      const ctx = gsap.context(() => {
+        const scene = gsap.timeline({ scrollTrigger: {
+          trigger: el, start: 'top top', end: 'bottom top', scrub: 0.8, invalidateOnRefresh: true,
+        } })
+        el.querySelectorAll('[data-parallax-speed]').forEach(layer => {
+          const depth = Number(layer.dataset.parallaxSpeed) - 1
+          scene.to(layer, { y: -depth * 180 * strength, ease: 'none' }, 0)
         })
-      })
-
-      // Optional: Add pointer parallax for desktop
-      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        const pointer = { x: 0, y: 0 }
-        
-        const onPointerMove = (event) => {
-          const rect = el.getBoundingClientRect()
-          pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
-          pointer.y = ((event.clientY - rect.top) / rect.height) * 2 - 1
-          
-          layers.forEach((layer) => {
-            const speed = parseFloat(layer.dataset.parallaxSpeed) || 1
-            const depth = speed - 1
-            const drift = 15 // max drift in pixels
-            
-            gsap.to(layer, {
-              xPercent: -pointer.x * depth * drift,
-              yPercent: -pointer.y * depth * drift * 0.6,
-              duration: 1.1,
-              ease: 'power3.out',
-              overwrite: 'auto'
-            })
-          })
-        }
-        
-        const onPointerLeave = () => {
-          layers.forEach((layer) => {
-            gsap.to(layer, {
-              xPercent: 0,
-              yPercent: 0,
-              duration: 1.1,
-              ease: 'power3.out',
-              overwrite: 'auto'
-            })
-          })
-        }
-        
-        el.addEventListener('pointermove', onPointerMove)
-        el.addEventListener('pointerleave', onPointerLeave)
-        
-        return () => {
-          el.removeEventListener('pointermove', onPointerMove)
-          el.removeEventListener('pointerleave', onPointerLeave)
-        }
-      }
-    }, el)
-
-    return () => ctx.revert()
+        scene.to('.hero-orbit', { rotation: 32 * strength, scale: 1.12, ease: 'none' }, 0)
+          .to('.hero-terrain-back', { y: 100 * strength, x: -35 * strength, ease: 'none' }, 0)
+          .to('.hero-terrain-front', { y: -60 * strength, x: 45 * strength, ease: 'none' }, 0)
+          .to('.hero-horizon-glow', { y: 90 * strength, scale: 1.25, ease: 'none' }, 0)
+      }, el)
+      return () => ctx.revert()
+    })
+    return () => mm.revert()
   }, [])
 
   return (
     <section
       id="top"
+      aria-label="Sakthi Murugesan, Professional AI Engineer"
       ref={scope}
       className="hero-parallax relative isolate overflow-hidden border-b border-line bg-ink-950 pb-16 pt-28 md:pb-24 md:pt-40"
       style={{ overflowX: 'hidden', minHeight: '100vh' }}
       data-parallax="hero"
     >
+      <div className="hero-scene" aria-hidden="true">
+        <div className="hero-horizon-glow" />
+        <div className="hero-orbit"><div /><span /></div>
+        <svg className="hero-terrain hero-terrain-back" viewBox="0 0 1440 600" preserveAspectRatio="none">
+          <path d="M0 480 Q220 140 480 370 T1000 280 T1440 380 V600 H0Z" fill="#121010" />
+          {[0, 1, 2, 3, 4, 5].map(i => <path key={i} d={`M-100 ${470+i*22} Q230 ${160+i*28} 520 ${390+i*18} T1100 ${320+i*20} T1540 ${390+i*20}`} fill="none" stroke="#ff8c42" strokeOpacity=".13" />)}
+        </svg>
+        <svg className="hero-terrain hero-terrain-front" viewBox="0 0 1440 500" preserveAspectRatio="none">
+          <path d="M0 340 Q350 160 690 340 T1440 270 V500 H0Z" fill="#080809" />
+          {[0, 1, 2, 3].map(i => <path key={i} d={`M-100 ${350+i*30} Q320 ${170+i*26} 720 ${350+i*24} T1540 ${260+i*25}`} fill="none" stroke="#ff8c42" strokeOpacity=".1" />)}
+        </svg>
+      </div>
       {/* Particle Background - Disabled for performance optimization */}
       {/* <div className="absolute inset-0 -z-40">
         <SimpleParticles />

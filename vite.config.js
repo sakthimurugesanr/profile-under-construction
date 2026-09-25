@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
   plugins: [react()],
+  ssr: { noExternal: ['gsap'] },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -12,11 +13,6 @@ export default defineConfig({
   build: {
     // Optimize bundle size (using esbuild instead of terser)
     minify: 'esbuild',
-    // esbuild options for dropping console logs
-    esbuild: {
-      drop: ['console', 'debugger'],
-      target: 'es2015',
-    },
     // Split chunks for better caching
     rollupOptions: {
       output: {

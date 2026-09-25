@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { Marquee } from '@/components/ui/Marquee'
@@ -13,19 +13,12 @@ import { Contact } from '@/components/sections/Contact'
 import { marquee } from '@/data/site'
 import { ScrollTrigger, reducedMotion } from '@/lib/gsap'
 import { useScrollReveal } from '@/hooks/useScrollReveal'
-import { useDynamicTitle } from '@/hooks/useDynamicTitle'
-import SEO from '@/components/seo/SEO'
-import { getAllSchemas } from '@/data/schema'
 
 export default function App() {
-  const [isClient, setIsClient] = useState(false)
   
   useScrollReveal() // Enable scroll-triggered animations
-  useDynamicTitle() // Enable dynamic page titles based on scroll position
 
   useEffect(() => {
-    setIsClient(true)
-    
     // Performance monitoring - non-blocking
     if (typeof performance !== 'undefined') {
       performance.mark('app-start')
@@ -48,26 +41,9 @@ export default function App() {
     }
   }, [])
 
-  if (!isClient) {
-    return (
-      <>
-        <SEO 
-          schema={getAllSchemas()}
-          title="Professional React AI Engineer & MERN Stack Developer"
-          description="Professional React AI Engineer and MERN Stack Developer specializing in artificial intelligence, machine learning, and full-stack web development. Expert in building innovative AI-powered applications with React, Node.js, Python, and modern web technologies."
-        />
-        <div style={{ minHeight: '100vh', background: '#050506' }} />
-      </>
-    )
-  }
 
   return (
     <>
-      <SEO 
-        schema={getAllSchemas()}
-        title="Professional React AI Engineer & MERN Stack Developer"
-        description="Professional React AI Engineer and MERN Stack Developer specializing in artificial intelligence, machine learning, and full-stack web development. Expert in building innovative AI-powered applications with React, Node.js, Python, and modern web technologies."
-      />
       <ScrollProgress />
       {/* Cursor disabled for performance */}
       {/* <Cursor /> */}

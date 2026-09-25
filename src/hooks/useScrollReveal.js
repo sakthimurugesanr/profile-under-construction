@@ -1,35 +1,26 @@
 import { useEffect } from 'react'
 
-/**
- * Reveals elements with [data-reveal] attribute when they scroll into view
- * Adds 'revealed' class to trigger CSS transitions
- */
+/** One observer; content stays visible before hydration or without JavaScript. */
 export function useScrollReveal() {
   useEffect(() => {
-    const elements = document.querySelectorAll('[data-reveal]')
-    
-    if (!elements.length) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed')
-            // Optional: Unobserve after revealing (reveal only once)
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      {
-        threshold: 0.1, // Trigger when 10% of element is visible
-        rootMargin: '0px 0px -50px 0px', // Trigger slightly before element enters viewport
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const elements = [...document.querySelectorAll('[data-reveal]')]
+    const observer = new IntersectionObserver(entries => {
+      for (const { target, isIntersecting } of entries) {
+        if (!isIntersecting) continue
+        target.classList.add('revealed')
+        observer.unobserve(target)
       }
-    )
-
-    elements.forEach((el) => observer.observe(el))
-
+    }, { threshold: 0, rootMargin: '0px 0px 80px 0px' })
+    for (const el of elements) {
+      // Never hide already visible content during hydration.
+      if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('revealed')
+      else el.classList.add('reveal-pending')
+      observer.observe(el)
+    }
     return () => {
-      elements.forEach((el) => observer.unobserve(el))
+      observer.disconnect()
+      elements.forEach(el => el.classList.remove('reveal-pending'))
     }
   }, [])
 }

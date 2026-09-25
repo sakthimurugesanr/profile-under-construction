@@ -46,7 +46,7 @@ export function Stack() {
   return (
     <Section id="stack" tone="alt" className="!py-16 md:!py-20 lg:!py-24" data-section="stack">
       <SectionHeader
-        title="What I work with"
+        title="AI & Full-Stack Development Skills"
         note="Tools I use regularly, grouped by where they sit in an application."
         data-reveal="fade-up"
       />

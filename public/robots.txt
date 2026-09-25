@@ -1,46 +1,5 @@
-# Enhanced robots.txt for Sakthi Murugesan Portfolio
-# Optimized for better search engine crawling and indexing
-
-# Allow all major search engines
 User-agent: *
 Allow: /
+Disallow: /test-image.html
 
-# Crawl-delay to prevent server overload
-Crawl-delay: 1
-
-# Disallow specific paths (commented out - enable if needed)
-# Disallow: /admin/
-# Disallow: /private/
-# Disallow: /temp/
-# Disallow: /assets/temp/
-
-# Allow important directories
-Allow: /src/
-Allow: /public/
-Allow: /assets/
-
-# Sitemap location
 Sitemap: https://iamsakthi.online/sitemap.xml
-
-# Specific rules for major search engines
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Slurp
-Allow: /
-Crawl-delay: 1
-
-# Block common bots that don't contribute to SEO
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
-User-agent: MJ12bot
-Disallow: /

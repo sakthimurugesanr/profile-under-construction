@@ -1,28 +1,31 @@
 import { useEffect, useState } from 'react'
 
-/** Highlights the nav item for whichever section owns the viewport. */
+/** A shared section observer drives navigation and document metadata. */
 export function useActiveSection(ids) {
   const [active, setActive] = useState(ids[0])
-
   useEffect(() => {
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter(Boolean)
-    if (!sections.length) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        if (visible) setActive(visible.target.id)
-      },
-      { rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.25, 0.5] }
-    )
-
-    sections.forEach((s) => observer.observe(s))
-    return () => observer.disconnect()
+    const sections = ids.map(id => document.getElementById(id)).filter(Boolean)
+    const select = () => {
+      const readingLine = window.innerHeight * 0.35
+      let current = sections[0]
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= readingLine) current = section
+      }
+      if (current) setActive(current.id)
+    }
+    if (!('IntersectionObserver' in window)) return
+    const observer = new IntersectionObserver(select, {
+      rootMargin: '-35% 0px -64% 0px', threshold: 0,
+    })
+    sections.forEach(section => observer.observe(section))
+    window.addEventListener('hashchange', select)
+    window.addEventListener('resize', select, { passive: true })
+    select()
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('hashchange', select)
+      window.removeEventListener('resize', select)
+    }
   }, [ids])
-
   return active
 }

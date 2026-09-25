@@ -381,7 +381,7 @@
   /* GSAP animates these; the class only sets the pre-animation
      state and is cleared once the tween completes. */
   .will-reveal {
-    opacity: 0;
+    opacity: 1;
   }
 
   .no-motion .will-reveal {
@@ -389,7 +389,7 @@
   }
 
   /* Scroll-triggered reveal animations */
-  [data-reveal] {
+  .reveal-pending[data-reveal] {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
@@ -401,7 +401,7 @@
   }
 
   /* Fade in from bottom */
-  [data-reveal="fade-up"] {
+  .reveal-pending[data-reveal="fade-up"] {
     opacity: 0;
     transform: translateY(40px);
   }
@@ -412,7 +412,7 @@
   }
 
   /* Fade in from left */
-  [data-reveal="fade-left"] {
+  .reveal-pending[data-reveal="fade-left"] {
     opacity: 0;
     transform: translateX(-60px);
     transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
@@ -424,7 +424,7 @@
   }
 
   /* Fade in from right */
-  [data-reveal="fade-right"] {
+  .reveal-pending[data-reveal="fade-right"] {
     opacity: 0;
     transform: translateX(60px);
     transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
@@ -436,7 +436,7 @@
   }
 
   /* Scale in */
-  [data-reveal="scale"] {
+  .reveal-pending[data-reveal="scale"] {
     opacity: 0;
     transform: scale(0.9);
   }
@@ -447,7 +447,7 @@
   }
 
   /* Slide from left (stronger effect for sections) */
-  [data-reveal="slide-left"] {
+  .reveal-pending[data-reveal="slide-left"] {
     opacity: 0;
     transform: translateX(-100px);
     transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -459,7 +459,7 @@
   }
 
   /* Slide from right (stronger effect for sections) */
-  [data-reveal="slide-right"] {
+  .reveal-pending[data-reveal="slide-right"] {
     opacity: 0;
     transform: translateX(100px);
     transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2535,4 +2535,394 @@
       margin-left: 0;
     }
   }
+}
+
+/* Keep all project cards reachable before JS, and with reduced motion. */
+.horizontal-scroll-container { width: 100%; overflow-x: auto; }
+.has-horizontal-motion .horizontal-scroll-container { overflow-x: visible; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Journey timelines inherit the portfolio's Syne, Inter and mono fonts. */
+.journey { min-width: 0; }
+.journey-nav { position: sticky; top: 4rem; z-index: 20; margin-bottom: 1rem; background: rgba(5,5,6,.96); border: 1px solid var(--rule); border-radius: 12px; backdrop-filter: blur(12px); }
+.journey-track { overflow-x: auto; scrollbar-width: thin; scrollbar-color: #555 transparent; cursor: grab; touch-action: pan-x pan-y; }
+.journey-track:active { cursor: grabbing; }
+.journey-years { position: relative; display: flex; list-style: none; margin: 0; padding: 22px 20px 12px; min-width: max-content; }
+.journey-years::before { content: ''; position: absolute; left: 20px; right: 20px; top: 28px; height: 1px; background: #414141; }
+.journey-years li { flex: 1; min-width: 180px; }
+.journey-link { display: flex; flex-direction: column; position: relative; align-items: flex-start; gap: 8px; padding: 0 16px 8px; font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: #aaa; text-decoration: none; user-select: none; }
+.journey-link small { font-family: 'Inter', sans-serif; font-size: .65rem; font-weight: 400; max-width: 220px; white-space: normal; }
+.journey-dot { width: 13px; height: 13px; border-radius: 50%; background: #555; border: 3px solid #151515; transition: background .2s, box-shadow .2s; }
+.journey-link[aria-current] { color: #ff8c42; }
+.journey-link[aria-current] .journey-dot { background: #ff8c42; box-shadow: 0 0 0 4px #ff8c4226; }
+.journey-link:focus-visible, .compact-menu a:focus-visible, .compact-menu-button:focus-visible { outline: 2px solid #ff8c42; outline-offset: 3px; }
+.journey-hint { margin: 0; padding: 0 36px 12px; font-family: 'Inter',sans-serif; font-size: .65rem; color: #999; }
+.journey-hint span { margin-left: 8px; color: #ff8c42; }
+.journey-entry { display: grid; grid-template-columns: minmax(150px, .7fr) minmax(0, 2fr); gap: clamp(24px,5vw,80px); padding: clamp(36px,6vw,80px) 0; border-bottom: 1px solid var(--rule); scroll-margin-top: 15rem; }
+.journey-entry:last-child { border-bottom: 0; }
+.journey-year { margin-top: 20px; font-family: 'Syne',sans-serif; font-size: clamp(2rem,4vw,4rem); font-weight: 800; letter-spacing: -.055em; line-height: 1.05; color: #eee; }
+.journey-year span { display: block; margin-top: 12px; color: #777; font-size: .4em; letter-spacing: -.02em; }
+.journey-card { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 16px; padding: clamp(22px,3vw,42px); border: 1px solid var(--rule); border-radius: 16px; background: linear-gradient(135deg,#171719,#0b0b0d); transition: border-color .3s; }
+.journey-entry.is-current .journey-card { border-color: #ff8c4259; }
+.journey-card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; width: 100%; }
+.journey-badge { border: 1px solid #444; border-radius: 100px; padding: 6px 10px; font-size: .65rem; color: #ccc; }
+.journey-status { color: #ff8c42; font-size: .7rem; }
+.journey-status::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: 7px; border-radius: 50%; background: currentColor; }
+.journey-title { font-family: 'Syne',sans-serif; font-weight: 700; font-size: clamp(1.35rem,2.7vw,2.5rem); line-height: 1.12; overflow-wrap: anywhere; }
+.journey-organization { font-size: clamp(.9rem,1.4vw,1.1rem); color: #ff9b5e; font-weight: 500; }
+.journey-details { display: grid; gap: 10px; list-style: disc; padding-left: 18px; color: #aaa; font-size: .85rem; line-height: 1.65; }
+.compact-menu-button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0; border: 1px solid #343434; border-radius: 8px; color: #eee; background: #111; }
+.compact-menu { position: fixed; inset: 12px 12px auto auto; margin: 0; padding: 0; width: min(360px,calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow-y: auto; border: 1px solid #363636; border-radius: 16px; background: #101012; color: #eee; }
+.compact-menu::backdrop { background: #000a; backdrop-filter: blur(5px); }
+.compact-menu-panel { padding: 20px; }
+.compact-menu-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid #333; }
+.compact-menu nav ul { list-style: none; margin: 12px 0 0; padding: 0; }
+.compact-menu nav a { display: flex; align-items: center; gap: 14px; min-height: 52px; padding: 10px 4px; border-bottom: 1px solid #242424; font-family: 'Syne',sans-serif; font-size: 1.2rem; font-weight: 700; }
+.compact-menu nav a[aria-current], .compact-menu nav a:hover { color: #ff8c42; }
+.compact-menu-number { font-family: 'Inter',sans-serif; font-size: .65rem; font-weight: 400; color: #777; }
+.compact-menu-arrow { margin-left: auto; font-size: 1rem; color: #888; }
+@media (min-width: 768px) { .journey-nav { top: 5rem; } }
+@media (min-width: 1024px) { .compact-menu-button.lg\:hidden { display: none; } }
+@media (max-width: 639px) {
+  .journey-entry { grid-template-columns: minmax(0,1fr); gap: 20px; scroll-margin-top: 14rem; }
+  .journey-date { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .journey-year { margin: 0; font-size: 1.7rem; text-align: right; }
+  .journey-year span { margin-top: 5px; font-size: .5em; }
+  .journey-years li { min-width: 155px; }
+  .journey-link { padding-inline: 10px; }
+  .journey-card { padding: 22px; }
+}
+
+/* Restore the original circular reveal and staggered mobile navigation. */
+.restored-mobile-menu { inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; border: 0; border-radius: 0; background: linear-gradient(135deg,#050506,#0d0d14 50%,#1a1a1f); }
+.restored-mobile-menu .compact-menu-panel { width: min(100%, 480px); min-height: 100%; margin: auto; padding: 20px 28px 32px; display: flex; flex-direction: column; justify-content: center; }
+.restored-mobile-menu .compact-menu-heading { margin-bottom: 12px; }
+.restored-mobile-menu nav a { font-family: 'Syne',sans-serif; font-size: clamp(1.15rem,5.5vw,1.65rem); min-height: 54px; }
+.hero-scene { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; opacity: .8; }
+.hero-horizon-glow { position: absolute; top: 4%; right: -10%; width: min(75vw,900px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle,#ff7b3520,transparent 65%); }
+.hero-orbit { position: absolute; width: clamp(280px,48vw,740px); aspect-ratio: 1; right: -10%; top: 4%; border: 1px solid #ff8c422a; border-radius: 50%; }
+.hero-orbit div { position: absolute; inset: 12%; border: 1px solid #ffffff12; border-radius: 50%; }
+.hero-orbit span { position: absolute; top: 14%; left: 14%; width: 8px; height: 8px; border-radius: 50%; background: #ff8c42; box-shadow: 0 0 30px #ff8c4290; }
+.hero-terrain { position: absolute; width: 115%; max-width: none; left: -7%; bottom: -5%; height: 65%; }
+.hero-terrain-front { height: 42%; bottom: -6%; }
+@media (max-width: 767px) {
+  .journey-nav { display: none; }
+  .journey-entry { scroll-margin-top: 5rem; }
+  .hero-scene { opacity: .55; }
+  .hero-orbit { right: -40%; top: 8%; }
+  .hero-parallax .copy { font-size: .9rem; line-height: 1.7; }
+  .hero-parallax .font-display.text-xl { font-size: 1.1rem; }
+  .journey-title { font-size: 1.3rem; }
+}
+@media (max-height: 600px) {
+  .restored-mobile-menu .compact-menu-panel { justify-content: flex-start; }
+  .restored-mobile-menu nav a { min-height: 42px; font-size: 1.1rem; }
+}
+
+/* Decorative parallax and elastic menu overshoot never create a page scrollbar. */
+html { overflow-x: clip; }
+.restored-mobile-menu { overflow-x: hidden; }
+
+/* Unframed portrait: no square panel, brush, tint or corner decorations. */
+#about .about-image-wrapper { 
+  aspect-ratio: 1; 
+  position: relative; 
+  top: auto; 
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+#about .about-image-container { 
+  border: 0; 
+  border-radius: 0; 
+  background: #050506; 
+  box-shadow: none; 
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+}
+#about .about-image { 
+  object-fit: contain; 
+  filter: grayscale(1) contrast(1.1); 
+  mix-blend-mode: normal; 
+  width: 100%;
+  height: 100%;
+}
+#about .about-image-container:hover .about-image { filter: grayscale(1) contrast(1.1); }
+.journey-entry { position: relative; perspective: 1100px; --journey-progress: 0; }
+.journey-entry::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg,#ff8c42,transparent); transform: scaleX(var(--journey-progress)); transform-origin: left; pointer-events: none; }
+.journey-card { transform-origin: 50% 60%; backface-visibility: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  .journey-entry::after { transform: none; opacity: .35; }
+}
+#about .about-image-container { mix-blend-mode: normal; }
+#about .about-image { filter: grayscale(1) contrast(1.1); mask-image: radial-gradient(ellipse 72% 58% at 50% 40%, #000 58%, transparent 100%); }
+
+/* Reference-inspired timeline scenes, scoped to career and education. */
+.journey-entry { isolation:isolate; min-height: min(760px,85svh); align-items:center; grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr); gap:clamp(24px,5vw,80px); padding:90px 0; }
+.journey-date { position:relative; z-index:2; align-self:center; }
+.journey-year { font-size:clamp(3.4rem,8vw,7.5rem); line-height:.95; letter-spacing:-.065em; }
+.journey-year > span { font-size:clamp(1rem,2vw,1.5rem); letter-spacing:0; margin-top:24px; }
+.journey-card { position:relative; z-index:2; background:rgba(13,13,15,.87); border-radius:2px; border:1px solid rgba(255,255,255,.12); border-top:2px solid var(--accent,#ff6b35); box-shadow:0 24px 70px #0005; }
+.journey-scene-art { position:absolute; z-index:-1; right:2%; top:12%; width:60%; height:74%; overflow:hidden; background:linear-gradient(145deg,#38221c,#171516 65%); border:1px solid #ffffff12; transform-origin:center; pointer-events:none; }
+.journey-scene-art > span { position:absolute; right:5%; bottom:-8%; font-size:clamp(160px,25vw,340px); font-weight:800; line-height:1; letter-spacing:-.09em; color:#ff713512; }
+.journey-scene-art i { position:absolute; width:90%; aspect-ratio:1; border:1px solid #ff81402b; border-radius:50%; left:25%; top:-40%; }
+.journey-scene-art i:nth-of-type(2) { width:115%; left:12%; top:-48%; }
+.journey-scene-art i:nth-of-type(3) { width:140%; left:0; top:-56%; }
+.journey-entry:nth-child(even) .journey-scene-art { background:linear-gradient(145deg,#282527,#121214 70%); }
+.journey-link[aria-current="step"] > span:not(.journey-dot) { display:inline-block; transform:scale(1.18); transform-origin:left center; }
+.journey-link > span { transition:transform .25s ease; }
+/* About is the only section using the liquid filter - Smoke Effect */
+#about .about-image-wrapper { 
+  isolation:isolate; 
+  aspect-ratio:1; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Smoke/Mist Effect Background - Dark atmospheric smoke */
+#about .about-ink-background { 
+  position:absolute; 
+  inset:-12px; 
+  background: 
+    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(80, 80, 90, 0.4) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 30% 70%, rgba(60, 60, 70, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 70% 20%, rgba(50, 50, 60, 0.25) 0%, transparent 50%),
+    linear-gradient(180deg, #0a0a0c 0%, #1a1a1e 50%, #0d0d10 100%);
+  filter:url(#about-liquify); 
+  z-index:-1;
+}
+
+/* Subtle smoke animation */
+@keyframes smokeDrift {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translateX(0) scale(1);
+  }
+  25% {
+    opacity: 0.8;
+    transform: translateX(5px) scale(1.02);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(-3px) scale(0.98);
+  }
+  75% {
+    opacity: 0.7;
+    transform: translateX(2px) scale(1.01);
+  }
+}
+
+#about .about-ink-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 100% 80% at 20% 80%, rgba(100, 100, 110, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 80% 20%, rgba(90, 90, 100, 0.1) 0%, transparent 40%);
+  animation: smokeDrift 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+#about .about-image-container { 
+  overflow:hidden; 
+  background:#050506; 
+  mix-blend-mode:normal; 
+  border-radius:0; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+}
+/* Black and white profile - always grayscale */
+#about .about-image { 
+  display:block; 
+  width:100%; 
+  height:100%; 
+  object-fit: contain;
+  mask-image:none; 
+  mix-blend-mode:normal; 
+  filter:grayscale(1) contrast(1.1); 
+}
+#about .about-image-container:hover .about-image { filter:grayscale(1) contrast(1.1); }
+#about .about-filter-definitions { position:absolute; pointer-events:none; }
+
+/* Animated Name - Left to Right on Scroll */
+.about-name-animate {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about-name-styled {
+  font-family: 'Allura', cursive;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 20px rgba(255, 255, 255, 0.15);
+}
+
+/* Social Icons - Black & White */
+.about-social-icons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px);
+}
+
+.linkedin-icon:hover {
+  background: #0077b5;
+  border-color: #0077b5;
+}
+
+.github-icon:hover {
+  background: #333;
+  border-color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .about-name-styled {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+  
+  .about-social-icons {
+    gap: 0.75rem;
+  }
+  
+  .social-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .social-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-name-styled {
+    font-size: clamp(1.75rem, 9vw, 2.5rem);
+  }
+  
+  .social-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .social-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Responsive Image Sizing - Increased Height & Size */
+@media (max-width: 640px) {
+  #about .about-image-wrapper {
+    max-width: 320px;
+    max-height: 400px;
+    aspect-ratio: 4/5;
+  }
+  #about .about-image-container {
+    width: 100%;
+    max-width: 320px;
+    max-height: 400px;
+    aspect-ratio: 4/5;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  #about .about-image-wrapper {
+    max-width: 400px;
+    max-height: 500px;
+    aspect-ratio: 4/5;
+  }
+  #about .about-image-container {
+    width: 100%;
+    max-width: 400px;
+    max-height: 500px;
+    aspect-ratio: 4/5;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  #about .about-image-wrapper {
+    max-width: 480px;
+    max-height: 600px;
+    aspect-ratio: 4/5;
+  }
+  #about .about-image-container {
+    width: 100%;
+    max-width: 480px;
+    max-height: 600px;
+    aspect-ratio: 4/5;
+  }
+}
+
+@media (min-width: 1025px) {
+  #about .about-image-wrapper {
+    max-width: 550px;
+    max-height: 700px;
+    aspect-ratio: 4/5;
+  }
+  #about .about-image-container {
+    width: 100%;
+    max-width: 550px;
+    max-height: 700px;
+    aspect-ratio: 4/5;
+  }
+}
+
+@media(max-width:767px) {
+ .journey-entry { min-height:0; grid-template-columns:1fr; padding:48px 0; gap:26px; }
+ .journey-date { display:block; }
+ .journey-year { font-size:clamp(3rem,13vw,5rem); margin-top:14px; }
+ .journey-year > span { display:inline-block; margin:0 0 0 18px; font-size:1rem; }
+ .journey-scene-art { top:18%; right:0; width:90%; height:70%; }
+ .journey-card { padding:24px 20px; }
+ #about .about-ink-background { inset:-7px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ #about .about-ink-background { filter:none; }
+ .journey-link > span { transition:none; }
 }

@@ -38,7 +38,7 @@ export function Contact() {
   return (
     <Section id="contact" tone="alt" data-section="contact">
       <SectionHeader
-        title="Get in touch"
+        title="Contact Sakthi Murugesan"
         note="Open to React and fullstack roles, and to freelance work I can fit around them."
         data-reveal="fade-up"
       />

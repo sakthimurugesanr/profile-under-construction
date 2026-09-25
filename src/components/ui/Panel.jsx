@@ -1,9 +1,11 @@
+import { forwardRef } from 'react'
 import { clsx } from '@/lib/clsx'
 
 /** Bordered surface used for every card on the page. */
-export function Panel({ as: Tag = 'div', interactive = false, flush = false, className, children, ...rest }) {
+export const Panel = forwardRef(function Panel({ as: Tag = 'div', interactive = false, flush = false, className, children, ...rest }, ref) {
   return (
     <Tag
+      ref={ref}
       className={clsx(
         'panel',
         flush && 'panel--flush',
@@ -15,4 +17,4 @@ export function Panel({ as: Tag = 'div', interactive = false, flush = false, cla
       {children}
     </Tag>
   )
-}
+})

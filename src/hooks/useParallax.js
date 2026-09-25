@@ -26,7 +26,7 @@ export function useParallax({
 
   useIsomorphicLayoutEffect(() => {
     const el = ref.current
-    if (!el || reducedMotion()) return
+    if (!el || reducedMotion() || coarsePointer()) return
 
     // Phones do less work: half the travel, no scaling.
     const factor = coarsePointer() ? 0.45 : 1
@@ -50,7 +50,6 @@ export function useParallax({
       )
     }, el)
 
-    ScrollTrigger.refresh()
     return () => ctx.revert()
   }, [distance, from, scale, lag, start, end, trigger])
 

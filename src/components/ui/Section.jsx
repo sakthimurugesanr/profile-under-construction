@@ -1,3 +1,4 @@
+import { SectionNote } from './SectionNote'
 import { clsx } from '@/lib/clsx'
 import { forwardRef } from 'react'
 import { sectionSEO } from '@/data/seo'
@@ -13,7 +14,7 @@ export const Section = forwardRef(function Section({ id, tone = 'base', classNam
       ref={ref}
       className={clsx('section', tone === 'alt' ? 'section--alt' : 'section--base', className)}
     >
-      <div className="shell flex flex-col gap-12 md:gap-16">{children}</div>
+      <div className="shell flex flex-col gap-12 md:gap-16"><SectionNote section={id} />{children}</div>
     </section>
   )
 })

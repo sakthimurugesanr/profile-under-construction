@@ -38,10 +38,14 @@ export function About() {
       const distance = context.conditions.mobile ? 22 : 65
       const el = sectionRef.current
       const ctx = gsap.context(() => {
-        gsap.fromTo('.about-image-wrapper', { y: distance, scale: .96 }, {
-          y: -distance, scale: 1.02, ease: 'none', scrollTrigger: {
+        gsap.fromTo('.about-image-column', { y: distance }, {
+          y: -distance, ease: 'none', scrollTrigger: {
             trigger: el.querySelector('.about-image-column'), start: 'top bottom', end: 'bottom top', scrub: .8, invalidateOnRefresh: true,
           },
+        })
+        gsap.fromTo('.about-signature-text', { opacity: 0, filter: 'blur(20px)', y: 20 }, {
+          opacity: 1, filter: 'blur(0px)', y: 0, duration: 1, ease: 'power2.out',
+          scrollTrigger: { trigger: el.querySelector('.about-portrait-signature'), start: 'top 92%', once: true },
         })
         const background = el.querySelector('.about-ink-background')
         const liquid = el.querySelector('[data-about-liquid]')
@@ -52,22 +56,6 @@ export function About() {
           .fromTo(liquid, { attr: { scale: 90 } }, { attr: { scale: 0 }, duration: 2.4, ease: 'power4.out' }, 0)
           // Image stays black and white (grayscale)
           .set(background, { filter: 'none' })
-        
-        // Animate the name from left to right on scroll
-        gsap.fromTo('.about-name-animate', 
-          { x: -100, opacity: 0 },
-          {
-            x: 0, 
-            opacity: 1, 
-            duration: 1.2, 
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: '.about-name-animate',
-              start: 'top 85%',
-              toggleActions: 'play none none reverse'
-            }
-          }
-        )
         gsap.fromTo('.about-description p', { y: 20, opacity: .2 }, {
           y: 0, opacity: 1, stagger: .15, duration: 1.2, ease: 'power4.out',
           scrollTrigger: { trigger: el.querySelector('.about-description'), start: 'top 90%', once: true },
@@ -104,10 +92,10 @@ export function About() {
                   <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" data-about-liquid="" />
                 </filter></defs>
               </svg>
-              <div className="about-ink-background" aria-hidden="true" />
+              <div className="about-ink-background journey-scene-art" aria-hidden="true"><i /><i /><i /></div>
               
               {/* Image Container - Optimized image for performance */}
-              <div className="about-image-container">
+              <div className="about-image-container journey-card">
                 <img
                   src="/assets/images/updated-sakthi.png"
                   alt="Sakthi Murugesan - React AI Engineer & MERN Stack Developer"
@@ -121,17 +109,12 @@ export function About() {
                 />
               </div>
             </div>
-          </div>
-
-          {/* Right Column - Content */}
-          <div className="about-content-column">
-            <div className="about-text-content">
-              {/* Animated Name - Left to Right on Scroll */}
-              <div className="about-name-animate" style={{ marginBottom: '1.5rem' }}>
-                <h2 className="about-name-styled">
+              {/* Name and Social Icons */}
+              <div className="about-name-section about-portrait-signature">
+                <p className="about-name-styled about-signature-text">
                   Sakthi Murugesan
-                </h2>
-                {/* Social Icons - Black & White */}
+                </p>
+                {/* Social Icons */}
                 <div className="about-social-icons">
                   <a 
                     href={profile.links.linkedin} 
@@ -158,6 +141,11 @@ export function About() {
                 </div>
               </div>
 
+          </div>
+
+          {/* Right Column - Content */}
+          <div className="about-content-column">
+            <div className="about-text-content">
               {/* Section Label */}
               <div className="about-section-label about-fade-in">
                 <span className="section-eyebrow">About Me</span>

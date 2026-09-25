@@ -16,7 +16,7 @@ export function Experience() {
   return <Section id="work" data-section="experience">
     <SectionHeader title="Professional Experience" kicker="The journey so far"
       note="From client partnerships to full-stack development. Explore the roles that shaped my work." />
-    <Timeline label="Experience" items={roles} renderItem={role => <>
+    <Timeline stickyDates label="Experience" items={roles} renderItem={role => <>
       <div className="journey-card-top"><span className="journey-badge">{role.type}</span>
         {role.current && <span className="journey-status">Current role</span>}</div>
       <h3 id={`${role.id}-title`} className="journey-title">{role.title}</h3>

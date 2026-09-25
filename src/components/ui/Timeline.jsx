@@ -3,7 +3,7 @@ import { gsap } from '@/lib/gsap'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 
 /** Scoped timeline: native touch scrolling, mouse dragging and keyboard links. */
-export function Timeline({ label, items, renderItem }) {
+export function Timeline({ label, items, renderItem, stickyDates = false }) {
   const root = useRef(null)
   const rail = useRef(null)
   const drag = useRef(null)
@@ -28,6 +28,15 @@ export function Timeline({ label, items, renderItem }) {
       if (context.conditions.reduce) return
       const distance = context.conditions.mobile ? 18 : 56
       const ctx = gsap.context(() => {
+        if (stickyDates && !context.conditions.mobile) {
+          const entries = root.current.querySelectorAll('[data-timeline-entry]')
+          gsap.fromTo(rail.current, { '--rail-progress': 0 }, {
+            '--rail-progress': 1, ease: 'none', scrollTrigger: {
+              trigger: entries[0], start: 'top 45%', endTrigger: entries[entries.length - 1],
+              end: 'top 45%', scrub: 1.2, invalidateOnRefresh: true,
+            },
+          })
+        }
         root.current.querySelectorAll('[data-timeline-entry]').forEach(entry => {
           const date = entry.querySelector('.journey-date')
           const card = entry.querySelector('.journey-card')
@@ -38,7 +47,8 @@ export function Timeline({ label, items, renderItem }) {
             rotateY: -5, y: -distance, scale: 1, ease: 'none',
             scrollTrigger: { trigger: entry, start: 'top bottom', end: 'bottom top', scrub: 1 },
           })
-          scene.fromTo(date, { y: distance * .6 }, { y: -distance * .6, ease: 'none' }, 0)
+          if (!stickyDates) scene.fromTo(date, { y: distance * .6 }, { y: -distance * .6, ease: 'none' }, 0)
+          scene
             .fromTo(card, { y: distance, rotateX: context.conditions.mobile ? 0 : 3, scale: .98 },
               { y: -distance * .25, rotateX: 0, scale: 1, ease: 'none' }, 0)
             .fromTo(entry, { '--journey-progress': 0 }, { '--journey-progress': 1, ease: 'none' }, 0)
@@ -47,7 +57,7 @@ export function Timeline({ label, items, renderItem }) {
       return () => ctx.revert()
     })
     return () => mm.revert()
-  }, [items])
+  }, [items, stickyDates])
 
   const startDrag = event => {
     if (event.pointerType !== 'mouse' || event.button !== 0) return
@@ -68,12 +78,13 @@ export function Timeline({ label, items, renderItem }) {
     if (drag.current) drag.current.down = false
   }
 
-  return <div className="journey" ref={root}>
+  return <div className={`journey ${stickyDates ? 'journey--sticky-dates' : ''}`} ref={root}>
     <nav className="journey-nav" aria-label={`${label} timeline`}>
       <div className="journey-track" ref={rail} onPointerDown={startDrag} onPointerMove={moveDrag}
         onPointerUp={stopDrag} onPointerCancel={() => { drag.current = null }}
         onPointerLeave={event => { if (!rail.current.hasPointerCapture(event.pointerId)) drag.current = null }}
         onClickCapture={event => { if (drag.current?.moved) event.preventDefault(); drag.current = null }}>
+        {stickyDates && <span className="journey-progress-line" aria-hidden="true"><span /></span>}
         <ol className="journey-years">
           {items.map(item => <li key={item.id}>
             <a href={`#${item.id}`} className="journey-link" aria-current={active === item.id ? 'step' : undefined}
@@ -89,7 +100,7 @@ export function Timeline({ label, items, renderItem }) {
     <div className="journey-entries">
       {items.map((item, index) => <article key={item.id} id={item.id} data-timeline-entry
         className={`journey-entry ${active === item.id ? 'is-current' : ''}`} aria-labelledby={`${item.id}-title`}>
-        <div className="journey-scene-art" aria-hidden="true"><span>{String(index + 1).padStart(2, '0')}</span><i /><i /><i /></div>
+        <div className="journey-scene-art" aria-hidden="true"><i /><i /><i /></div>
         <div className="journey-date"><span className="meta">{String(index + 1).padStart(2, '0')} / {label}</span>
           <p className="journey-year">{item.year}<span>{item.endYear || 'Present'}</span></p>
         </div>

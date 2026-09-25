@@ -3047,3 +3047,13 @@ body { overflow-x: clip; }
 @media(prefers-reduced-motion:reduce) {
  .hero-wave-name [data-hero-name="last"] .hero-name-letter { animation:none; }
 }
+
+/* Deep charcoal hero, with restrained ambient accents. */
+#top.hero-parallax { background-color:#050507; }
+#top .hero-horizon-glow { opacity:.2; }
+#top .hero-terrain { opacity:.35; }
+#top > [data-parallax-speed="0.5"], #top > [data-parallax-speed="0.7"] { opacity:.2; }
+#top > [data-parallax-speed="1.3"] { opacity:.12; }
+
+/* Decorative silk remains inside the hero and never blocks links. */
+#top .hero-spider-web { position:absolute; inset:0; width:100%; height:100%; z-index:1; pointer-events:none; }

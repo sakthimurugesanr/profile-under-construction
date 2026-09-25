@@ -1,3 +1,4 @@
+import { HeroSpiderWeb } from '@/components/ui/HeroSpiderWeb'
 import { SectionNote } from '@/components/ui/SectionNote'
 import { useRef } from 'react'
 import { facts, profile } from '@/data/site'
@@ -78,6 +79,7 @@ export function Hero() {
       style={{ overflowX: 'hidden', minHeight: '100vh' }}
       data-parallax="hero"
     >
+      <HeroSpiderWeb />
       <div
         className="hero-scene"
         aria-hidden="true"
